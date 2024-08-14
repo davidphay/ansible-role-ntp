@@ -39,7 +39,6 @@ jobs:
     name: Molecule
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
       matrix:
         distro:
           - rockylinux9
@@ -70,10 +69,8 @@ jobs:
       #     ANSIBLE_FORCE_COLOR: '1'
       #     MOLECULE_DISTRO: ${{ matrix.distro }}
       - name: Molecule
-        uses: gofrolist/molecule-action@v2
+        uses: buluma/molecule-action@v24.6.17
         with:
-          molecule_options: --debug --base-config molecule/default/molecule.yml  # --base-config molecule/_shared/base.yml
-          molecule_command: test
-          molecule_args: --scenario-name ${{ matrix.distro }}
-        env:
-          ANSIBLE_FORCE_COLOR: '1'
+          image: "${{ matrix.image }}"
+          options: parallel
+          command: "--debug test"
